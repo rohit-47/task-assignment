@@ -2,18 +2,17 @@ package com.taskManagement.user_service.controller;
 
 import com.taskManagement.user_service.entity.User;
 import com.taskManagement.user_service.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
     private UserRepository userRepository;
 
     @GetMapping("/{id}")

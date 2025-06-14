@@ -3,7 +3,6 @@ package com.taskManagement.user_service.service;
 import com.taskManagement.user_service.entity.User;
 import com.taskManagement.user_service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
