@@ -20,6 +20,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final HelperService helperService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Override
     public AuthResponse login(LoginRequestDTO request) {
@@ -29,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new InvalidCredentialsException("Wrong password!");
         }
-        return new AuthResponse(user.getEmail(), user.getPassword());
+        return new AuthResponse(jwtService.generateToken(user));
     }
 
     @Override
@@ -48,6 +49,6 @@ public class AuthServiceImpl implements AuthService {
                 .build();
         User created = userService.saveUser(createUser);
 
-        return new AuthResponse(created.getEmail(), created.getPassword());
+        return new AuthResponse(jwtService.generateToken(created));
     }
 }
