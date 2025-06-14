@@ -10,6 +10,7 @@ import com.taskManagement.user_service.exception.UserAlreadyExistsException;
 import com.taskManagement.user_service.interfaces.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,12 +19,14 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserService userService;
     private final HelperService helperService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AuthResponse login(LoginRequestDTO request) {
         User user = userService.getUserByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid email!"));
-        if(!user.getPassword().equals(request.getPassword())){
+
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new InvalidCredentialsException("Wrong password!");
         }
         return new AuthResponse(user.getEmail(), user.getPassword());
@@ -37,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
         Role role = helperService.checkRole(user.getRole());
         User createUser =  User.builder()
                 .email(user.getEmail())
-                .password(user.getPassword())
+                .password(passwordEncoder.encode(user.getPassword()))
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .role(role)
