@@ -1,6 +1,5 @@
 package com.taskManagement.user_service.dtos;
 
-import com.taskManagement.user_service.enums.Role;
 import lombok.Data;
 
 @Data
